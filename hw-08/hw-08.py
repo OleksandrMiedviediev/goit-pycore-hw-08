@@ -1,5 +1,19 @@
 from collections import UserDict
 from datetime import datetime, timedelta
+import pickle
+import os
+
+def save_data(book, filename="addressbook.pkl"):
+    with open(filename, "wb") as f:
+        pickle.dump(book, f)
+
+
+def load_data(filename="addressbook.pkl"):
+    if not os.path.exists(filename):
+        return AddressBook()
+
+    with open(filename, "rb") as f:
+        return pickle.load(f)
 
 # --------- МОДЕЛІ ---------
 class Field:
@@ -185,7 +199,7 @@ def birthdays(args, book: AddressBook):
 
 # --------- MAIN ---------
 def main():
-    book = AddressBook()
+    book = load_data()
     print("Welcome to the assistant bot!")
 
     while True:
@@ -196,6 +210,7 @@ def main():
         command, *args = parts
 
         if command in ["close", "exit"]:
+            save_data(book)
             print("Good bye!")
             break
 
