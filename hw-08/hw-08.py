@@ -1,7 +1,6 @@
 from collections import UserDict
 from datetime import datetime, timedelta
 import pickle
-import os
 
 def save_data(book, filename="addressbook.pkl"):
     with open(filename, "wb") as f:
@@ -9,11 +8,11 @@ def save_data(book, filename="addressbook.pkl"):
 
 
 def load_data(filename="addressbook.pkl"):
-    if not os.path.exists(filename):
+    try:
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+    except FileNotFoundError:
         return AddressBook()
-
-    with open(filename, "rb") as f:
-        return pickle.load(f)
 
 # --------- МОДЕЛІ ---------
 class Field:
